@@ -5,6 +5,7 @@ from datetime import datetime
 import requests
 from .constants import PARAMS
 from .lights.lights import Light
+from .heater.heater import Heater
 from .credentials import PHUE, HASH1, HASH2, CLIENT_ID
 
 app = Flask(__name__)
@@ -14,6 +15,8 @@ LIGHTS = {
     f"{PHUE.LIGHT1_ID.value}": Light(PHUE.LIGHT1_ID.value),
     f"{PHUE.LIGHT2_ID.value}": Light(PHUE.LIGHT2_ID.value),
 }
+
+HEATER = Heater()
 
 
 @app.route("/listener")
@@ -55,6 +58,12 @@ def modify_light():
     id = request.args.get('id', default=1, type=str)
     on = request.args.get('on', default="true", type=str)
     return LIGHTS[id].set_light(on)
+
+
+@app.route("/heater", methods=['PUT'])
+def modify_heater():
+    on = request.args.get('on', default="true", type=str)
+    return Heater.set_heater(on)
 
 
 def refresh():
