@@ -63,7 +63,8 @@ def modify_light():
 @app.route("/heater", methods=['PUT'])
 def modify_heater():
     on = request.args.get('on', default="true", type=str)
-    return Heater.set_heater(on)
+    print(f"On: {on}")
+    return HEATER.set_heater("false")
 
 
 def refresh():
